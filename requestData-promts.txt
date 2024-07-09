@@ -1,0 +1,37 @@
+Act as AWS Developer Expert and help me to resolve this problem, my table is arround 220mb with records within it. i'm trying to pull all of this data into python. I realize this needs to be a chunked batch process and looped through, but I'm not sure how i can set the batches to start where the previous left off.
+Is there some way to filter my scan? from what I read that filtering occurs after loading and the loading stops at 1mb so I wouldn't actually be able to scan in new objects.
+
+my function:
+
+# Getting data by batches
+def requestCurves(refDate: str, resource: any, source: str) -> list:
+    
+    if source not in sources.keys():
+        return {'statusCode':500, ' message':'Source {} not found'.format(source), 'data':''}
+    
+    try:
+        table = resource.Table(sources[source]['curves'])
+    except Exception as e:
+        return {'statusCode':500, ' message':str(e), 'data':''}
+    
+    try:
+        curves = table.scan(
+            FilterExpression='refDate = :refDate',
+            ExpressionAttributeValues={':refDate': refDate}
+        )
+    except Exception as e:
+        return {'statusCode':500, ' message':str(e), 'data':''}
+
+    if curves['Count'] > 0:
+        for c in curves['Items']:
+            if 'curveType' not in c.keys():
+                c['curveType'] = 'Discount'
+                if 'dayCounter' not in c.keys():
+                    c['dayCounter'] = 'Actual360'
+        return curves['Items']
+    else:
+        return {
+            'statusCode':404,
+            'message':'No curves found for refDate {}'.format(refDate, source),
+            'data':[]
+            }
