@@ -45,3 +45,6 @@ def requestCurves(refDate: str, resource: any, source: str) -> list:
 # Example usage:
 # dynamodb = boto3.resource('dynamodb')
 # result = requestCurves('2023-07-01', dynamodb, 'mySource')
+
+
+# 1-element_to_delete {'statusCode': 500, 'message': "Parameter validation failed:\nInvalid type for parameter TableName, value: dynamodb.Table(name='cf-discount-curves'), type: <class 'boto3.resources.factory.dynamodb.Table'>, valid types: <class 'str'>\nInvalid type for parameter ExpressionAttributeValues.:updatedAt, value: 2024-06-30T19:47:04.964826, type: <class 'str'>, valid types: <class 'dict'>", 'data': ''}
