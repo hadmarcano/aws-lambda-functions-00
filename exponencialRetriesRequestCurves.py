@@ -54,6 +54,7 @@ def requestCurves(refDate: str, resource: any, source: str) -> list:
 
     if curves:
         return curves
+    
     else:
         return {
             'statusCode': 404,
